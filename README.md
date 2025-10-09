@@ -1,0 +1,3 @@
+This repo wraps and releases the FHIR validator CLI in Docker - as found on https://github.com/hapifhir/org.hl7.fhir.core/releases
+
+Documentation for the CLI can be found on https://confluence.hl7.org/spaces/FHIR/pages/35718580/Using+the+FHIR+Validator#UsingtheFHIRValidator-PackageRegeneration (in regards to repackaging) - like e.g. `java -jar validator_cli.jar -re-package "ch.post.windseeker.epr#0.2.0-7f00916-20251001191916" -output "ch.post.windseeker.epr-package#0.2.0-7f00916-20251001191916.tgz" -scope igs -pin  -mode cnt -mode tx -mode api -package-name "ch.post.windseeker.epr#0.2.0-7f00916-20251001191916" -version 4.0.1 -expansion-parameters ../fsh-generated/resources/Parameters-expParam.json`

@@ -1,0 +1,53 @@
+# This is a composite action that runs the validator
+
+# This requires that a container with the fhir-validator is configured in
+# the jobs.<job_id>.container.image field in the workflow file.
+
+name: FHIR Validation CLI Repackager
+description: Repackages a FHIR IG
+inputs:
+
+  fhir-ig-id:
+    description: 'The FHIR IG id'
+    required: true
+
+  output:
+    description: 'The output file name'
+    required: true
+  
+  scope:
+    description: 'which to include value sets etc from dependent IGs or core as well'
+    required: false
+    default: 'all'
+
+  mode:
+    description: 'include the content conformance resources'
+    required: false
+    default: "['-mode cnt', '-mode tx', '-mode api']"
+  
+  package-name:
+    description: ""
+    required: true
+
+  version:
+    description: "Version of FHIR"
+    required: false
+    default: "4.0.1"
+  
+  expansion-parameters:
+    description: 'specifies the expansion parameters to use - this can supply fixed versions for code systems and value sets'
+    required: false
+    default: "../fsh-generated/resources/Parameters-expParam.json"
+
+  command:
+    description: 'The command to run the IG publisher'
+    required: false
+    default: 'java -jar /validator_cli.jar'
+
+runs:
+  using: 'composite'
+
+  steps:
+    - name: Run the FHIR Validation CLI Repackager
+      run: ${{ inputs.command }} -re-package ${{fhir-ig-id}} -output ${{output}} -scope ${{scope}} -pin ${{mode}} -package-name ${{package-name}} -version ${{version}} -expansion-parameters ${{expansion-parameters}}
+      shell: bash

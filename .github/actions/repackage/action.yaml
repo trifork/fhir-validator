@@ -23,7 +23,7 @@ inputs:
   mode:
     description: 'include the content conformance resources'
     required: false
-    default: "['-mode cnt', '-mode tx', '-mode api']"
+    default: '-mode cnt -mode tx -mode api'
   
   package_name:
     description: ""

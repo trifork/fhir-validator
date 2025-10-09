@@ -7,7 +7,7 @@ name: FHIR Validation CLI Repackager
 description: Repackages a FHIR IG
 inputs:
 
-  fhir-ig-id:
+  fhir_ig_id:
     description: 'The FHIR IG id'
     required: true
 
@@ -25,7 +25,7 @@ inputs:
     required: false
     default: "['-mode cnt', '-mode tx', '-mode api']"
   
-  package-name:
+  package_name:
     description: ""
     required: true
 
@@ -34,7 +34,7 @@ inputs:
     required: false
     default: "4.0.1"
   
-  expansion-parameters:
+  expansion_parameters:
     description: 'specifies the expansion parameters to use - this can supply fixed versions for code systems and value sets'
     required: false
     default: "../fsh-generated/resources/Parameters-expParam.json"
@@ -49,5 +49,5 @@ runs:
 
   steps:
     - name: Run the FHIR Validation CLI Repackager
-      run: ${{ inputs.command }} -re-package ${{ inputs.fhir-ig-id }} -output ${{ inputs.output }} -scope ${{ inputs.scope }} -pin ${{ inputs.mode }} -package-name ${{ inputs.package-name }} -version ${{ inputs.version }} -expansion-parameters ${{ inputs.expansion-parameters }}
+      run: ${{ inputs.command }} -re-package ${{ inputs.fhir_ig_id }} -output ${{ inputs.output }} -scope ${{ inputs.scope }} -pin ${{ inputs.mode }} -package-name ${{ inputs.package_name }} -version ${{ inputs.version }} -expansion-parameters ${{ inputs.expansion_parameters }}
       shell: bash

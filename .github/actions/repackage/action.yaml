@@ -42,7 +42,7 @@ inputs:
   command:
     description: 'The command to run the IG publisher'
     required: false
-    default: 'java -jar /validator_cli.jar'
+    default: 'java -jar validator_cli.jar'
 
 runs:
   using: 'composite'

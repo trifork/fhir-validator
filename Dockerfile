@@ -41,4 +41,4 @@ WORKDIR ${HOME}
 
 # USER ${uid}:${gid}
 
-ENTRYPOINT ["java", "-jar", "validator_cli.jar"]
+ENTRYPOINT ["java", "-jar", "/github/home/validator_cli.jar"]

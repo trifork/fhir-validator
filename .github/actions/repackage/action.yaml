@@ -2,7 +2,7 @@
 
 # This requires that a container with the fhir-validator is configured in
 # the jobs.<job_id>.container.image field in the workflow file.
-
+# See https://confluence.hl7.org/spaces/FHIR/pages/35718580/Using+the+FHIR+Validator#UsingtheFHIRValidator-PackageRegeneration for documentation
 name: FHIR Validation CLI Repackager
 description: Repackages a FHIR IG
 inputs:
@@ -18,7 +18,7 @@ inputs:
   scope:
     description: 'which to include value sets etc from dependent IGs or core as well'
     required: false
-    default: 'all'
+    default: 'igs'
 
   mode:
     description: 'include the content conformance resources'

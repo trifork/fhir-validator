@@ -8,7 +8,7 @@ ARG user=validator
 ARG group=validator
 ARG uid=1000
 ARG gid=1000
-ARG HOME=/github/home
+ARG WORKING_DIRECTORY=/usr/local/bin/
 ARG IG_PUB_VERSION
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
@@ -35,10 +35,10 @@ RUN apt-get update \
   && mkdir -p "${HOME}/fhir-package-cache" \
   && chown -R "${uid}:${gid}" "${HOME}"
 
-RUN mv validator_cli.jar /github/home/validator_cli.jar
+RUN mv validator_cli.jar /usr/local/bin/validator_cli.jar
 
-WORKDIR ${HOME}
+WORKDIR ${WORKING_DIRECTORY}
 
 # USER ${uid}:${gid}
 
-ENTRYPOINT ["java", "-jar", "/github/home/validator_cli.jar"]
+ENTRYPOINT ["java", "-jar", "/usr/local/bin/validator_cli.jar"]

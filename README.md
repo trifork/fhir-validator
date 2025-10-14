@@ -26,6 +26,7 @@ Example use of the Github Actions also located in this repo is as follows:
           DAEMON_CACHE_DIR="/root/.fhir/packages/x.y.z#${NEW_VERSION}"
           rm -rf "${DAEMON_CACHE_DIR}"
           mkdir -p "${DAEMON_CACHE_DIR}"
+          tar -xzf output/package.tgz -C "${DAEMON_CACHE_DIR}"
 
       - name: Repackage Implementation Guide
         uses: trifork/fhir-validator/.github/actions/repackage@main

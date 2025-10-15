@@ -22,7 +22,7 @@ RUN apt-get -o Acquire::AllowInsecureRepositories=true update || true \
 
 # --- Now repositories are signed again ---
 RUN apt-get update \
-  && apt-get install --yes --no-install-recommends curl \
+  && apt-get install --yes --no-install-recommends curl jq \
   && curl -fsSL "https://github.com/hapifhir/org.hl7.fhir.core/releases/download/${IG_PUB_VERSION}/validator_cli.jar" \
        -o validator_cli.jar \
   && apt-get purge --yes curl \

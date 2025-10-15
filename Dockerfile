@@ -9,7 +9,7 @@ ARG group=validator
 ARG uid=1000
 ARG gid=1000
 ARG WORKING_DIRECTORY=/usr/local/bin/
-ARG IG_PUB_VERSION=6.7.3
+ARG IG_PUB_VERSION
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 

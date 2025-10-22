@@ -65,5 +65,5 @@ runs:
 
   steps:
     - name: Run the FHIR Validation CLI Repackager
-      run: ${{ inputs.command }} -re-package ${{ inputs.fhir_ig_id }} -output ${{ inputs.output }} -scope ${{ inputs.scope }} ${{ inputs.pin }} ${{ inputs.mode }} -package-name ${{ inputs.package_name }} -version ${{ inputs.version }} -expansion-parameters ${{ inputs.expansion_parameters }}
+      run: ${{ inputs.command }} -re-package ${{ inputs.fhir_ig_id }} -output ${{ inputs.output }} -scope ${{ inputs.scope }} ${{ inputs.include_conforms_to }} ${{ inputs.ignore_list }} ${{ inputs.include_list }} ${{ inputs.pin }} ${{ inputs.mode }} -package-name ${{ inputs.package_name }} -version ${{ inputs.version }} -expansion-parameters ${{ inputs.expansion_parameters }}
       shell: bash

@@ -28,6 +28,18 @@ inputs:
   pin:
     description: 'pinning versions. Use the value <-pin> for pinning.'
     required: false
+
+  ignore_list:
+    description: 'comma separated list of canonical urls to resources that will be removed in the final output'
+    required: false
+
+  include_list:
+    description: 'comma separated list of canonical urls to resources that will be added to the final ouput'
+    required: false
+
+  include_conforms_to:
+    description: 'boolean flag that will include any resources that are stated in any invariant using FHIR path conformsTo expression'
+    required: false
   
   package_name:
     description: ""

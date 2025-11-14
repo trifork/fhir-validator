@@ -1,4 +1,4 @@
-FROM openjdk:23-jdk-slim-bookworm
+FROM eclipse-temurin:23-jdk
 
 LABEL maintainer="Jens Kristian Villadsen" \
       org.opencontainers.image.vendor="Trifork" \

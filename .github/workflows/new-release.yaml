@@ -8,13 +8,17 @@ on:
         required: true
         default: false
         type: boolean
+      ig_pub_version:
+        description: "IG Publisher version to use when manually triggering the workflow."
+        required: true
+        type: string
 
   push:
     tags: ["*"]
 
   schedule:
-    # https://crontab.guru/#0_7_*_*_1-5
-    - cron: "0 7 * * 1-5"
+    # https://crontab.guru/#0_7_*_*_*
+    - cron: "0 7 * * *"
 
 # permissions are needed if pushing to ghcr.io
 permissions:
@@ -62,6 +66,20 @@ jobs:
           # https://docs.github.com/en/actions/using-jobs/defining-outputs-for-jobs
           echo "upstream_version=$upstream_version" >> $GITHUB_OUTPUT
           echo "Found upstream release: \"$upstream_version\""
+
+      - name: Resolve IG Publisher version
+        id: ig_version
+        env:
+          IG_PUB_VERSION_INPUT: ${{ github.event.inputs.ig_pub_version || '' }}
+          UPSTREAM_VERSION: ${{ steps.upstream.outputs.upstream_version }}
+        run: |
+          ig_pub_version="${IG_PUB_VERSION_INPUT}"
+          if [[ -z "$ig_pub_version" ]]; then
+            ig_pub_version="${UPSTREAM_VERSION}"
+          fi
+          echo "Using IG Publisher version: $ig_pub_version"
+          echo "IG_PUB_VERSION=$ig_pub_version" >> $GITHUB_ENV
+          echo "version=$ig_pub_version" >> $GITHUB_OUTPUT
 
       - name: Get the latest FUT release
         id: fut
@@ -125,7 +143,7 @@ jobs:
             type=semver,pattern={{major}}
             type=sha
             type=raw,latest
-            type=semver,pattern={{version}},value=${{ steps.upstream.outputs.upstream_version }}
+            type=semver,pattern={{version}},value=${{ steps.ig_version.outputs.version }}
 
       - name: Build and push
         if: env.NEW_BUILD == 'true'
@@ -134,7 +152,7 @@ jobs:
         with:
           context: .
           platforms: linux/amd64 #,linux/arm64
-          build-args: IG_PUB_VERSION=${{ steps.upstream.outputs.upstream_version }}
+          build-args: IG_PUB_VERSION=${{ steps.ig_version.outputs.version }}
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
@@ -146,7 +164,7 @@ jobs:
       # would then prevent the tag from being created.
       # and the failed build would be retried at each schedule.
       - name: Create tag for the new upstream release
-        if: steps.upstream.outputs.upstream_version != steps.fut.outputs.fut_version
+        if: steps.upstream.outputs.upstream_version != steps.fut.outputs.fut_version && steps.ig_version.outputs.version == steps.upstream.outputs.upstream_version
         run: |
-          git tag ${{ steps.upstream.outputs.upstream_version }}
-          git push origin ${{ steps.upstream.outputs.upstream_version }}
+          git tag ${{ steps.ig_version.outputs.version }}
+          git push origin ${{ steps.ig_version.outputs.version }}

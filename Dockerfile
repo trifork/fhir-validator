@@ -30,8 +30,19 @@ RUN apt-get update \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/* \
   \
-  && groupadd -g "${gid}" "${group}" \
-  && useradd -l -u "${uid}" -g "${group}" -m "${user}" -d "${HOME}" \
+  && group_name="${group}" \
+  && existing_group="$(getent group "${gid}" | cut -d: -f1 || true)" \
+  && if [[ -n "${existing_group}" ]]; then \
+       echo "Group with GID ${gid} already exists (${existing_group}), reusing it."; \
+       group_name="${existing_group}"; \
+     else \
+       groupadd -g "${gid}" "${group_name}"; \
+     fi \
+  && if id -u "${uid}" >/dev/null 2>&1; then \
+       echo "User with UID ${uid} already exists ($(id -nu "${uid}")), skipping creation."; \
+     else \
+       useradd -l -u "${uid}" -g "${group_name}" -m "${user}" -d "${HOME}"; \
+     fi \
   && mkdir -p "${HOME}/fhir-package-cache" \
   && chown -R "${uid}:${gid}" "${HOME}"
 
